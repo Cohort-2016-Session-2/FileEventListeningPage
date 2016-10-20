@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Demo</title>
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<style>
+		#files {
+			border-style: solid;
+			border-width: 5px;
+		}
+		#upload {
+			border-style: dotted;
+			border-width: 3px;
+		}
+
+	</style>
+	<script>
+		function handleFileSelect(evt) {
+			//Get files:
+			var files = evt.target.files;
+			//Get the first file
+			var f = files[0];
+			//Get the FileReader object
+			var reader = new FileReader();
+
+			//Redefine onload for reader
+			reader.onload = (
+					function(theFile) {
+						return function(e) {
+							jQuery('#output').
+									val(e.target.result);
+						}; //end return
+					} //end function(theFile)
+			) (f); //end reader.onload
+
+			//Actually read the text:
+			reader.readAsText(f, "UTF-8");
+		}
+
+	</script>
+</head>
+<body>
+<form id="theForm" enctype="multipart/form-data">
+	<div id="files">
+		<input id="upload" type=file accept="text/html" name="files[]" size=30>
+		<br>
+		<img id="image" src="textFile.jpeg" alt="Drop file here..." height="30" width="30">
+		<textarea class="form-control" rows=35 cols=120 id="output"></textarea>
+	</div>
+</form>
+<script>
+	var input = document.getElementById("upload");
+	input.addEventListener(
+			"change",
+			handleFileSelect,
+			false);
+	//Arguments for addEventListener:
+	//1. The event to listen for
+	//2. What to do (call) when the event happens
+	//3. Optional arguments (usually false)
+
+</script>
+</body>
+</html>
